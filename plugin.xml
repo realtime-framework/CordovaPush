@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="co.realtime.plugins.CordovaPush"
+    version="0.1.3">
+
+  <name>CordovaPush</name>
+	<author>Reatime</author>
+
+	<description>
+		This Cordova plugin should be used with the iOS/Android platforms together with the Realtime Messaging library (ORTC) for Push Notifications support.
+	</description>
+
+	<license>MIT</license>
+
+	<js-module src="www/OrtcPlugin.js" name="OrtcPushPlugin">
+        <clobbers target="OrtcPushPlugin" />
+	</js-module>
+
+	<engines>
+		<engine name="cordova" version=">=3.5.0" />
+	</engines>
+
+	<!-- ios -->
+	<platform name="ios">
+
+		<config-file target="config.xml" parent="/*">
+			<feature name="OrtcPushPlugin">
+				<param name="ios-package" value="OrtcPushPlugin"/>
+			</feature>
+		</config-file>
+
+		<source-file src="src/ios/RealtimeCordovaDelegate.m" />
+		<source-file src="src/ios/OrtcPushPlugin.m" />
+
+		<header-file src="src/ios/RealtimeCordovaDelegate.h" />
+		<header-file src="src/ios/OrtcPushPlugin.h" />
+
+	</platform>
+
+	<!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="OrtcPushPlugin" >
+                <param name="android-package" value="co.realtime.plugins.android.cordovapush.OrtcPushPlugin"/>
+            </feature>
+        </config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+			<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+			<uses-permission android:name="android.permission.WAKE_LOCK" />
+			<uses-permission android:name="android.permission.VIBRATE"/>
+			<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+			<permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+			<uses-permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE" />
+			<!---->
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<activity android:name="co.realtime.plugins.android.cordovapush.OrtcPushHandlerActivity" android:exported="true"/>
+			<receiver android:name="co.realtime.plugins.android.cordovapush.GcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+				<intent-filter>
+					<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+					<category android:name="$PACKAGE_NAME" />
+				</intent-filter>
+			</receiver>
+		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+		</config-file>
+	
+	<source-file src="src/android/OrtcPushHandlerActivity.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
+    	<source-file src="src/android/GcmReceiver.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
+        <source-file src="src/android/OrtcPushPlugin.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
+	<source-file src="res/version.xml" target-dir="res/values" />
+	<source-file src="src/android/libs/ortc-android-2.1.26.jar" target-dir="libs/"/> 
+	<source-file src="src/android/libs/android-support-v4.jar" target-dir="libs/"/> 
+	<source-file src="src/android/libs/google-play-services.jar" target-dir="libs/"/> 
+    </platform>
+
+</plugin>
