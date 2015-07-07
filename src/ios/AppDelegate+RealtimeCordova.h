@@ -1,17 +1,15 @@
 //
-//  RealtimeCordovaDelegate.h
-//  babblr
+//  AppDelegate+RealtimeCordova.h
+//  CordovaPush
 //
-//  Created by Joao Caixinha on 15/09/14.
+//  Created by Joao Caixinha on 06/07/15.
 //
 //
 
-#import <RealtimePushAppDelegate.h>
-#import <Cordova/CDVViewController.h>
-#import <OrtcClient.h>
+#import "AppDelegate.h"
+#import "OrtcClient.h"
 
-@interface RealtimeCordovaDelegate : NSObject<UIWebViewDelegate>
-
+@interface AppDelegate (RealtimeCordova)
 
 @property(retain, nonatomic)CDVViewController *viewController;
 @property(retain, nonatomic)NSDictionary *pushInfo;

@@ -1,31 +1,57 @@
 //
-//  RealtimeCordovaDelegate.m
-//  babblr
+//  AppDelegate+RealtimeCordova.m
+//  CordovaPush
 //
-//  Created by Joao Caixinha on 15/09/14.
+//  Created by Joao Caixinha on 06/07/15.
 //
 //
 
-#import "RealtimeCordovaDelegate.h"
+#import "AppDelegate+RealtimeCordova.h"
+#import <objc/runtime.h>
 
-@implementation RealtimeCordovaDelegate
+static char launchNotificationKey;
 
 
-- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
+@implementation AppDelegate (RealtimeCordova)
+@dynamic pushInfo;
+
+
+
+
++ (void)load
+{
+    Method original, change;
+    
+    original = class_getInstanceMethod(self, @selector(init));
+    change = class_getInstanceMethod(self, @selector(change_init));
+    method_exchangeImplementations(original, change);
+}
+
+- (AppDelegate *)change_init
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registForNotifications)
+                                                 name:@"UIApplicationDidFinishLaunchingNotification" object:nil];
+    
+    return [self change_init];
+}
+
+
+
+- (BOOL)registForNotifications
 {
     
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
-        [application registerUserNotificationSettings:settings];
-        [application registerForRemoteNotifications];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
     } else {
-        [application registerForRemoteNotificationTypes: UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge];
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge];
     }
 #else
     [application registerForRemoteNotificationTypes: UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge];
 #endif
-
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handlePushNotifications)
@@ -65,7 +91,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
         [self processPush:userInfo];
     } else {
         //save it for later
-        _pushInfo = userInfo;
+        self.pushInfo = userInfo;
     }
 }
 
@@ -80,18 +106,28 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
         [self handleCustom:pushInfo from:userInfo];
     }
     
-    NSError *error;
     
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:pushInfo
-                                                       options:(NSJSONWritingOptions)    (NSJSONWritingPrettyPrinted)
-                                                         error:&error];
-    
-    NSString *jsonstring = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSString * jsCallBack;
     NSString *channel = [userInfo objectForKey:@"C"];
     
-    NSString * jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@',%@);",channel, jsonstring];
-    
-    [self.viewController.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
+    if ([[pushInfo objectForKey:@"payload"] isKindOfClass:[NSString class]]) {
+        
+        jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@','%@');",channel, [pushInfo objectForKey:@"payload"]];
+        [self.viewController.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
+        
+    }else{
+        
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[pushInfo objectForKey:@"payload"]
+                                                           options:(NSJSONWritingOptions)    (NSJSONWritingPrettyPrinted)
+                                                             error:&error];
+        
+        NSString *jsonstring = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+        jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@',%@);",channel, jsonstring];
+        
+        [self.viewController.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
+    }
 }
 
 
@@ -144,8 +180,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 
 - (void)handlePushNotifications
 {
-    if (_pushInfo != nil) {
-        [self processPush:_pushInfo];
+    if (self.pushInfo != nil) {
+        [self processPush:self.pushInfo];
     }
 }
 
@@ -160,6 +196,21 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     
 }
+
+
+
+
+- (NSDictionary *)pushInfo
+{
+    return objc_getAssociatedObject(self, &launchNotificationKey);
+}
+
+- (void)setPushInfo:(NSDictionary *)aDictionary
+{
+    objc_setAssociatedObject(self, &launchNotificationKey, aDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+
 
 
 @end

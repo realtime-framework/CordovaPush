@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="co.realtime.plugins.CordovaPush"
-    version="0.1.3">
+    version="0.1.4">
 
   <name>CordovaPush</name>
 	<author>Reatime</author>
@@ -29,11 +29,24 @@
 			</feature>
 		</config-file>
 
-		<source-file src="src/ios/RealtimeCordovaDelegate.m" />
+		<source-file src="src/ios/AppDelegate+RealtimeCordova.m" />
 		<source-file src="src/ios/OrtcPushPlugin.m" />
 
-		<header-file src="src/ios/RealtimeCordovaDelegate.h" />
+		<header-file src="src/ios/AppDelegate+RealtimeCordova.h" />
 		<header-file src="src/ios/OrtcPushPlugin.h" />
+        
+        <header-file src="src/ios/ortc/OrtcClient.h" />
+        <source-file src="src/ios/ortc/OrtcClient.m" />
+        
+        <header-file src="src/ios/ortc/Balancer.h" />
+        <source-file src="src/ios/ortc/Balancer.m" />
+        
+        <header-file src="src/ios/SocketRocket/SRWebSocket.h" />
+        <source-file src="src/ios/SocketRocket/SRWebSocket.m" />
+        
+        <framework src="libicucore.dylib" />
+        <framework src="Security.framework" />
+        <framework src="CFNetwork.framework" />
 
 	</platform>
 
