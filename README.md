@@ -7,13 +7,12 @@
 This Cordova plugin should be used with the iOS/Android platform together with the Realtime Messaging library (ORTC) for Push Notifications support.  
 
 <h3>Important</h3>
-Push Notifications only work in real devices (not on simulator).
+Push Notifications only work in real devices for the iOS platform (not on simulator).
 
 <hr/>
 <h3>Contents</h3>
 
 <ul>
-    <li><a ref='mg'>Migration guide from version 0.0.5 to version 0.1.*</a></li>
 	<li><a ref='pc'>Project configuration</a></li>
 	<li><a ref='Mi'>Manual instalation</a></li>
 	<li><a ref='api'>API reference</a></li>
@@ -21,24 +20,7 @@ Push Notifications only work in real devices (not on simulator).
 	<li><a ref='te'>Testing the custom push notifications delivery</a></li>
 </ul> 
 <hr/>
-<h2 id='mg'>Migration guide from version 0.0.5 to version 0.1.*</h2>
-<ul>
-    <p>Now the Cordova arguments passed to OrtcPushPlugin are JSON Objects on the functions connect,subscribe and unsubscribe.</p>
-    <li><p>Old Version 0.0.5</p>
-    <ul><li><pre><code>OrtcPushPlugin.connect(<b>['your_application_key', 'token', 'metadata', 'https://ortc-developers.realtime.co/server/ssl/2.1/']</b>,...</code></pre></li></ul>
-    <p>New Version 0.1.*</p>
-    <ul><li><pre><code>OrtcPushPlugin.connect(<b>{'appkey':'your_application_key', 'token':'token', 'metadata':'metadata', 'url':'https://ortc-developers.realtime.co/server/ssl/2.1/',projectId':'projectNumber'}</b>...</code></pre></li></ul>
-<p><b>NOTE: projectId is only necessary for Android Push Notifications.</b></p>
-    <li><p>Old Version 0.0.5</p>
-    <ul><li><pre><code>OrtcPushPlugin.subscribe(<b>channel.value</b>, function (){...</code></pre></li></ul>
-    <p>New Version 0.1.*</p>
-    <ul><li><pre><code>OrtcPushPlugin.subscribe(<b>{'channel':channel.value}</b>, function (){...</code></pre></li></ul>
-    <li><p>Old Version 0.0.5</p>
-    <ul><li><pre><code>OrtcPushPlugin.unsubscribe(<b>channel.value</b>, function (){...</code></pre></li></ul>
-    <p>New Version 0.1.*</p>
-    <ul><li><pre><code>OrtcPushPlugin.unsubscribe(<b>{'channel':channel.value}</b>, function (){...</code></pre></li></ul>
-</ul>
-<hr/>
+
 <h2 id='pc'>Project configuration</h2>
 <h3 id='pd'>Plugin dependencies</h3>
 <ul>
@@ -143,6 +125,20 @@ Push Notifications only work in real devices (not on simulator).
 <h2 id='ue'>Usage example</h2>
 <hr/>
 
+Add to your HTML page HEAD section:
+<pre><code>
+&lt;script type="text/javascript">
+     document.addEventListener("deviceready",
+              function () {
+              	if(window.plugins && window.plugins.OrtcPushPlugin){
+                		var OrtcPushPlugin = window.plugins.OrtcPushPlugin;
+                		OrtcPushPlugin.checkForNotifications();
+                 }
+               }, false);
+&lt;/script>
+</code></pre>
+
+Add to your app:
 <pre><code>
 
 //Establish connection with ORTC server and subscribe the channel entered in the input text box on the HTML interface.
