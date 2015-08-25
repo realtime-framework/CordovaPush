@@ -1,7 +1,9 @@
 package co.realtime.plugins.android.cordovapush;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -11,8 +13,6 @@ import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Iterator;
 
 import ibt.ortc.api.Ortc;
 import ibt.ortc.extensibility.OnConnected;
@@ -43,10 +43,11 @@ public class OrtcPushPlugin extends CordovaPlugin {
     private static CordovaWebView gWebView;
     private static Bundle gCachedExtras = null;
     private static boolean gForeground = false;
-
+    private static CordovaInterface sCordova;
     @Override
     public void initialize(final CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
+        sCordova = cordova;
         gForeground = true;
         try {
             Ortc ortc = new Ortc();
@@ -245,10 +246,17 @@ public class OrtcPushPlugin extends CordovaPlugin {
             }
 
 
-            Log.v(TAG, "sendJavascript: " + send);
+            Log.i(TAG, "sendJavascript: " + send);
 
             if (gWebView != null) {
-                gWebView.sendJavascript(send);
+                final String finalSend = send;
+                sCordova.getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        gWebView.loadUrl("javascript:" + finalSend);
+                    }
+                });
+
             }
         } catch (Exception e) {
             Log.e(TAG, "sendJavascript: JSON exception");
