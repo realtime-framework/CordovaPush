@@ -8,8 +8,8 @@
  };
  
  
- OrtcPushPlugin.prototype.connect = function(config, success, error) {
- cordova.exec(success, error, "OrtcPushPlugin", "connect", config ? [config] : []);
+ OrtcPushPlugin.prototype.connect = function(config, success) {
+ cordova.exec(success, success, "OrtcPushPlugin", "connect", config ? [config] : []);
  };
  
  OrtcPushPlugin.prototype.disconnect = function(success) {
@@ -47,6 +47,13 @@
  ev.channel = channel;
  ev.payload = payload;
  ev.initEvent('push-notification', true, true, arguments);
+ document.dispatchEvent(ev);
+ };
+
+ OrtcPushPlugin.prototype.onException = function(error){
+ var ev = document.createEvent('HTMLEvents');
+ ev.description = error;
+ ev.initEvent('onException', true, true, arguments);
  document.dispatchEvent(ev);
  };
  

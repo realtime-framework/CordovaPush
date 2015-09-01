@@ -21,12 +21,14 @@
     NSString* metadata = [args objectForKey:@"metadata"];
     NSString* serverUrl = [args objectForKey:@"url"];
     
-    // Instantiate Messaging Client
-    _ortc = [OrtcClient ortcClientWithConfig:self];
-    
-    // Set connection properties
-    [_ortc setConnectionMetadata:metadata];
-    [_ortc setClusterUrl:serverUrl];
+    if (!_ortc) {
+        // Instantiate Messaging Client
+        _ortc = [OrtcClient ortcClientWithConfig:self];
+        
+        // Set connection properties
+        [_ortc setConnectionMetadata:metadata];
+        [_ortc setClusterUrl:serverUrl];
+    }
     
     // Connect
     [_ortc connect:appKey authenticationToken:token];
@@ -34,8 +36,20 @@
 
 - (void)disconnect:(CDVInvokedUrlCommand*)command
 {
-    [_connectCommand setObject:command forKey:@"disconnect"];
-    [_ortc disconnect];
+    [self trowException:@"ORTC not connected" forCommand:command code:^(CDVInvokedUrlCommand *cmd) {
+        [_connectCommand setObject:cmd forKey:@"disconnect"];
+        [_ortc disconnect];
+    }];
+    
+    
+}
+
+- (void)trowException:(NSString*)exception forCommand:(CDVInvokedUrlCommand*)command code:(void (^)(CDVInvokedUrlCommand*))code{
+    if (!_ortc) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"onException" object:nil userInfo:@{@"exception":exception}];
+        return;
+    }
+    code(command);
 }
 
 - (void)onConnected:(OrtcClient *)ortc
@@ -54,15 +68,17 @@
 
 - (void)onException:(OrtcClient *)ortc error:(NSError *)error
 {
-    NSLog(@"EXCEPTION %@", error.description);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"onException" object:nil userInfo:@{@"exception":error.localizedDescription}];
 }
 
 - (void)onReconnected:(OrtcClient *)ortc
 {
+    
 }
 
 - (void)onReconnecting:(OrtcClient *)ortc
 {
+    
 }
 
 - (void)onSubscribed:(OrtcClient *)ortc channel:(NSString *)channel
@@ -82,21 +98,24 @@
 
 - (void)subscribe:(CDVInvokedUrlCommand*)command
 {
-    NSString* channel = [[command.arguments objectAtIndex:0] objectForKey:@"channel"];
-    [_connectCommand setObject:command forKey:[NSString stringWithFormat:@"sub:%@",channel]];
-    
-    [_ortc subscribeWithNotifications:channel subscribeOnReconnected:YES onMessage:^(OrtcClient* ortc, NSString* channel, NSString* message) {
+    [self trowException:@"ORTC not connected" forCommand:command code:^(CDVInvokedUrlCommand *cmd) {
+        NSString* channel = [[cmd.arguments objectAtIndex:0] objectForKey:@"channel"];
+        [_connectCommand setObject:cmd forKey:[NSString stringWithFormat:@"sub:%@",channel]];
         
-        NSLog(@"%@", message);
-    }
-     ];
+        [_ortc subscribeWithNotifications:channel subscribeOnReconnected:YES onMessage:^(OrtcClient* ortc, NSString* channel, NSString* message) {
+            
+            //NSLog(@"%@", message);
+        }];
+    }];
 }
 
 - (void)unsubscribe:(CDVInvokedUrlCommand*)command
 {
-    NSString* channel = [[command.arguments objectAtIndex:0] objectForKey:@"channel"];
-    [_connectCommand setObject:command forKey:[NSString stringWithFormat:@"unsub:%@",channel]];
-    [_ortc unsubscribe:channel];
+    [self trowException:@"ORTC not connected" forCommand:command code:^(CDVInvokedUrlCommand *cmd) {
+        NSString* channel = [[cmd.arguments objectAtIndex:0] objectForKey:@"channel"];
+        [_connectCommand setObject:cmd forKey:[NSString stringWithFormat:@"unsub:%@",channel]];
+        [_ortc unsubscribe:channel];
+    }];
 }
 
 - (void)setApplicationIconBadgeNumber:(CDVInvokedUrlCommand*)command{
@@ -110,17 +129,19 @@
 
 - (void)send:(CDVInvokedUrlCommand*)command
 {
-    NSDictionary* args = [command.arguments objectAtIndex:0];
+ [self trowException:@"ORTC not connected" forCommand:command code:^(CDVInvokedUrlCommand *cmd) {
+    NSDictionary* args = [cmd.arguments objectAtIndex:0];
     
     NSString* channel = [args objectForKey:@"channel"];
-    NSString* channelMsg = [args objectForKey:@"channelMsg"];
+    NSString* channelMsg = [args objectForKey:@"message"];
     
-    [_ortc send:channel message:channelMsg];
+     [_ortc send:channel message:channelMsg];
+ }];
 }
 
 - (void)cancelAllLocalNotifications:(CDVInvokedUrlCommand*)command{
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
-	[[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     CDVPluginResult* pluginResult = nil;
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:[command callbackId]];

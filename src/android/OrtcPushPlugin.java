@@ -108,12 +108,12 @@ public class OrtcPushPlugin extends CordovaPlugin {
             client.onException = new OnException() {
                 @Override
                 public void run(OrtcClient ortcClient, Exception e) {
-                    Log.i(TAG,e.toString());
+                    onException(e.toString());
                 }
             };
 
         } catch (Exception e) {
-            Log.e(TAG,e.toString());
+            Log.i(TAG,e.toString());
         }
 
     }
@@ -232,6 +232,18 @@ public class OrtcPushPlugin extends CordovaPlugin {
     {
         return gWebView != null;
     }
+
+
+    private static void onException(String error){
+        final String exception = String.format("window.plugins.OrtcPushPlugin.onException('%s');", error);
+        sCordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gWebView.loadUrl("javascript:" + exception);
+            }
+        });
+    }
+
 
     public static void sendJavascript(JSONObject json) {
         try {
