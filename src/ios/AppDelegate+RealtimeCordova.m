@@ -31,7 +31,11 @@ static char launchNotificationKey;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registForNotifications)
                                                  name:@"UIApplicationDidFinishLaunchingNotification" object:nil];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(processException:)
+                                                 name:@"onException"
+                                               object:nil];    
     return [self change_init];
 }
 
@@ -57,6 +61,7 @@ static char launchNotificationKey;
                                              selector:@selector(handlePushNotifications)
                                                  name:@"checkForNotifications"
                                                object:nil];
+    
     return YES;
 }
 
@@ -93,6 +98,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
         //save it for later
         self.pushInfo = userInfo;
     }
+}
+
+- (void)processException:(NSNotification *)Notification
+{
+    NSDictionary *userInfo = Notification.userInfo;
+    NSString* error = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.onException('%@');", [userInfo objectForKey:@"exception"]];
+    [self.viewController.webView stringByEvaluatingJavaScriptFromString:error];
 }
 
 - (void)processPush:(NSDictionary *)userInfo

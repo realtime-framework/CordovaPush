@@ -67,11 +67,10 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 		<li>callback() - is triggered after iOS/Android native finishes processing.</li>
 	</ul>
 	</p></li>
-	<li><h4>connect(config, successCallback(), errorCallback())</h4><p>This method is used to establish the ORTC connection.
+	<li><h4>connect(config, successCallback())</h4><p>This method is used to establish the ORTC connection.
 	<ul>
 		<li>config - is a JSONObject with the config to connect. Ex: {'appkey':'YOUR_APPLICATION_KEY', 'token':'myToken', 'metadata':'myMetadata', 'url':'https://ortc-developers.realtime.co/server/ssl/2.1/','projectId':'YOUR_GOOGLE_PROJECT_NUMBER'}. ProjectId only necessary on Android Push Notifications.</li>
 		<li>successCallback() - this function is call when connection is established.</li>
-		<li>errorCallback() - this function is call when connection error exists.</li>
 	</ul>
 	</p></li>
 	<li><h4>disconnect(callback())</h4><p>This method is used to disconnect the ORTC connection.</p>
@@ -120,6 +119,12 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 		<ul>
 			<li>logString - is the string to be logged into the console.</li>
 		</ul>
+	</li>
+	<li><h4>onException event</h4>
+	<p>To get the exceptions from the underlying native ortc client you must create the event listener with the name "onException" on your html code like:</p>
+	<pre><code>document.addEventListener("onException", function(exception){
+		window.plugins.OrtcPushPlugin.log("onException: " + exception.description);
+    }, false);</code></pre>
 	</li>
 </ul> 
 <h2 id='ue'>Usage example</h2>
