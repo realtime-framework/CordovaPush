@@ -12,18 +12,18 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 
 ## Step by step configuration iOS/Android
 
-1.  ##### Add the plugin using the Cordova CLI
+1.  **Add the plugin using the Cordova CLI**
 
         cordova plugin add cordovapush
 
-3.  ##### Generate the APNS certificates for push notification on the Apple Developer Center
+2.   **Generate the APNS certificates for push notification on the Apple Developer Center**
 
     [Follow the iOS Push Notifications tutorial](http://messaging-public.realtime.co/documentation/starting-guide/mobilePushAPNS.html)
-4.  ##### Generate the Android API keys for push notification on the Google Cloud Messaging
+3.   **Generate the Android API keys for push notification on the Google Cloud Messaging**
 
     [Follow the Android Push Notifications tutorial](http://messaging-public.realtime.co/documentation/starting-guide/mobilePushGCM.html)
 
-6.  ##### Build and run the app in an iOS/Android device
+4.   **Build and run the app in an iOS/Android device**
 
     NOTE: iOS - The Push Notifications won't work on the simulators, only on actual devices.  
      NOTE: Android - The Push Notifications will work on the emulators only if is a Google APIs emulator.
@@ -36,23 +36,23 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 
 * * *
 
-*   #### checkForNotifications(callback())
+*   ** checkForNotifications(callback()) **
 
     This method is used to verify push notifications on buffer on the native code from the javascript interface.
 
     *   callback() - is triggered after iOS/Android native finishes processing.
-*   #### connect(config, successCallback())
+*   ** connect(config, successCallback()) **
 
     This method is used to establish the ORTC connection.
 
     *   config - is a JSONObject with the config to connect. Ex: {'appkey':'YOUR_APPLICATION_KEY', 'token':'myToken', 'metadata':'myMetadata', 'url':'https://ortc-developers.realtime.co/server/ssl/2.1/','projectId':'YOUR_GOOGLE_PROJECT_NUMBER'}. ProjectId only necessary on Android Push Notifications.
     *   successCallback() - this function is call when connection is established.
-*   #### disconnect(callback())
+*   ** disconnect(callback()) **
 
     This method is used to disconnect the ORTC connection.
 
     *   callback() - is triggered after connection is disconnected.
-*   #### subscribe(channel, callback())
+*   ** subscribe(channel, callback()) **
 
     Subscribe a channel. Note: In order to receive the push notifications on the channel you just subscribed you have to add an event listener with the name "push-notification" to your html like:
 
@@ -73,34 +73,34 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 
     *   is a JSONObject with the channel to subscribe. Ex: {'channel':'mychannel'}
     *   callback() - is triggered after channel is subscribed.
-*   #### unsubscribe(channel,callback())
+*   ** unsubscribe(channel,callback()) **
 
     This method is used to unsubscribe a channel previously subscribed.
 
     *   channel - is a JSONObject with the channel name to unsubscribe. Ex: {'channel':'mychannel'}
     *   callback() - is triggered after channel is unsubscribed.
-*   #### setApplicationIconBadgeNumber(badge,callback())
+*   ** setApplicationIconBadgeNumber(badge,callback()) **
 
     This method is used to set the application badge number on iOS. Not implemented on Android.
 
     *   badge - the number to appear on the bage.
     *   callback() - is triggered after iOS/Android native code finishes.
-*   #### send(config)
+*   ** send(config) **
 
     This method is used to send a message to a channel.
 
     *   config - is a JSONObject with the channel to send the message. Ex: {'channel':'mychannel','message':'mymessage'}.
-*   #### cancelAllLocalNotifications(callback())
+*   ** cancelAllLocalNotifications(callback()) **
 
     This method is used to clear notifications from notification center.
 
     *   callback() - is triggered after iOS/Android native code finishes.
-*   #### log(logString)
+*   ** log(logString) **
 
     This is a handy method to log data into XCODE/AndroidStudio console from the javascript code.
 
     *   logString - is the string to be logged into the console.
-*   #### onException event
+*   ** onException event **
 
     To get the exceptions from the underlying native ortc client you must create the event listener with the name "onException" on your html code like:
 
