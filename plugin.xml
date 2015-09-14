@@ -3,7 +3,7 @@
     id="co.realtime.plugins.CordovaPush"
     version="0.1.8">
 
-  <name>CordovaPush</name>
+  <name>cordovapush</name>
 	<author>Reatime</author>
 
 	<description>
