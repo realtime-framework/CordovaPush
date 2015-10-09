@@ -1278,7 +1278,10 @@ static NSString *ortcDEVICE_TOKEN;
 						[msgSentDict setObject:[NSNumber numberWithBool:YES] forKey:@"isMsgSent"];
 						[messagesBuffer setObject:msgSentDict forKey:messageId];
 					}
+                    
                     aMessage = [self escapeRecvChars:aMessage];
+                    
+                    aMessage = [self checkForEmoji:aMessage];
 					channelSubscription.onMessage(self, aChannel, aMessage);
 				}
             }
@@ -1286,21 +1289,45 @@ static NSString *ortcDEVICE_TOKEN;
     }
 }
 
+
+- (NSString*)checkForEmoji:(NSString*)str{
+    for (int i = 0; i < str.length; i++) {
+        unichar ascii = [str characterAtIndex:i];
+        if(ascii == '\\'){
+            i = i + 1;
+            int next = [str characterAtIndex:i];
+            
+            if(next == 'u'){
+                NSString *emoji = [str substringWithRange:NSMakeRange(i - 1, 12)];
+                NSData *pos = [emoji dataUsingEncoding:NSUTF8StringEncoding];
+                emoji = [[NSString alloc] initWithData:pos encoding:NSNonLossyASCIIStringEncoding];
+                
+                str = [str stringByReplacingCharactersInRange:NSMakeRange(i - 1, 12) withString:emoji];
+            }
+        }
+    }
+    return str;
+}
+
+
 - (NSString*)escapeRecvChars:(NSString*) str{
     str = [self simulateJsonParse:str];
     str = [self simulateJsonParse:str];
     return str;
 }
-- (NSString*)simulateJsonParse:(NSString*) str{
+
+- (NSString*)simulateJsonParse:(NSString*)str{
     NSMutableString *ms = [NSMutableString string];
     for(int i =0; i < [str length]; i++){
         unichar ascii = [str characterAtIndex:i];
+        
         if(ascii > 128){ //unicode
             [ms appendFormat:@"%@", [NSString stringWithCharacters:&ascii length:1]];
-        } else { //ascii
+        }else { //ascii
             if(ascii == '\\'){
                 i = i + 1;
                 int next = [str characterAtIndex:i];
+                
                 if(next == '\\'){
                     [ms appendString:@"\\"];
                 } else if(next == 'n'){
@@ -1315,14 +1342,20 @@ static NSString *ortcDEVICE_TOKEN;
                     [ms appendString:@"\r"];
                 } else if(next == 't'){
                     [ms appendString:@"\t"];
-                } 
+                } else if(next == 'u'){
+                    [ms appendString:@"\\u"];
+                }
             } else {
                 [ms appendFormat:@"%c", ascii];
             }
         }
     }
-    return ms;
+    
+    
+
+    return  ms ;
 }
+
 
 - (NSString*)generateId:(int) size
 {
