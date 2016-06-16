@@ -1,0 +1,24 @@
+{
+  "name": "cordovapush",
+  "version": "0.1.13",
+  "description": "This Cordova plugin should be used with the iOS/Android platforms together with the Realtime Messaging library (ORTC) for Push Notifications support.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realtime-framework/CordovaPush.git"
+  },
+  "keywords": [
+    "cordova-android",
+    "cordova-ios",
+    "ecosystem:cordova"
+  ],
+  "author": "Realtime",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/realtime-framework/CordovaPush/issues"
+  },
+  "homepage": "https://github.com/realtime-framework/CordovaPush#readme"
+}
