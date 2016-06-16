@@ -52,6 +52,7 @@
 
 	<!-- android -->
     <platform name="android">
+    	<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="OrtcPushPlugin" >
                 <param name="android-package" value="co.realtime.plugins.android.cordovapush.OrtcPushPlugin"/>
@@ -81,11 +82,8 @@
 		</config-file>
 	
 	<source-file src="src/android/OrtcPushHandlerActivity.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
-    	<source-file src="src/android/GcmReceiver.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
-        <source-file src="src/android/OrtcPushPlugin.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
-	<source-file src="src/android/libs/ortc-android-2.1.54.jar" target-dir="libs/"/> 
-	<dependency id="cordova-plugin-android-support-v4" />
-	<dependency id="cordova-plugin-googleplayservices" />
+	<source-file src="src/android/GcmReceiver.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
+    <source-file src="src/android/OrtcPushPlugin.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
     </platform>
 
 </plugin>

@@ -1,0 +1,10 @@
+repositories{    
+  jcenter()
+  flatDir{
+      dirs 'src/android/libs'
+   }
+}
+
+dependencies {
+    compile 'co.realtime:messaging-android:2.1.+'
+}
