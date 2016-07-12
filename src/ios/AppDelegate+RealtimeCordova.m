@@ -104,7 +104,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSDictionary *userInfo = Notification.userInfo;
     NSString* error = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.onException('%@');", [userInfo objectForKey:@"exception"]];
-    [self.viewController.webView stringByEvaluatingJavaScriptFromString:error];
+    [((UIWebView*)self.viewController.webView)  stringByEvaluatingJavaScriptFromString:error];
 }
 
 - (void)processPush:(NSDictionary *)userInfo
@@ -125,7 +125,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
     if ([[pushInfo objectForKey:@"payload"] isKindOfClass:[NSString class]]) {
         
         jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@','%@');",channel, [pushInfo objectForKey:@"payload"]];
-        [self.viewController.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
+        [((UIWebView*)self.viewController.webView)  stringByEvaluatingJavaScriptFromString:jsCallBack];
         
     }else{
         
@@ -138,7 +138,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
         
         jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@',%@);",channel, jsonstring];
         
-        [self.viewController.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
+        [((UIWebView*)self.viewController.webView)  stringByEvaluatingJavaScriptFromString:jsCallBack];
     }
 }
 

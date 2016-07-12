@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "../../../CordovaLib/Classes/CDV.h"
+#import "../../../CordovaLib/Classes/Public/CDV.h"
 #import "OrtcClient.h"
 
 @interface OrtcPushPlugin : CDVPlugin<OrtcClientDelegate>
