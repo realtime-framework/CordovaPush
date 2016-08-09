@@ -5,12 +5,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Random;
 
@@ -64,9 +63,12 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         String channel = extras.getString("C");
         String message = extras.getString("message");
 
+        Bitmap appIcon = BitmapFactory.decodeResource(context.getResources(), context.getApplicationInfo().icon);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setDefaults(defaults)
+                        .setLargeIcon(appIcon)
                         .setSmallIcon(context.getApplicationInfo().icon)
                         .setWhen(System.currentTimeMillis())
                         .setContentTitle(context.getString(context.getApplicationInfo().labelRes))
