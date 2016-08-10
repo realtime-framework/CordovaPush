@@ -63,13 +63,16 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         String channel = extras.getString("C");
         String message = extras.getString("message");
 
-        Bitmap appIcon = BitmapFactory.decodeResource(context.getResources(), context.getApplicationInfo().icon);
+        int largeIcon = getIcon(context, "large_notification_icon");
 
+        Bitmap appIcon = BitmapFactory.decodeResource(context.getResources(), largeIcon);
+
+        int smallIcon = getIcon(context, "small_notification_icon");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setDefaults(defaults)
                         .setLargeIcon(appIcon)
-                        .setSmallIcon(context.getApplicationInfo().icon)
+                        .setSmallIcon(smallIcon)
                         .setWhen(System.currentTimeMillis())
                         .setContentTitle(context.getString(context.getApplicationInfo().labelRes))
                         .setContentIntent(contentIntent)
@@ -95,6 +98,13 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         }
 
         mNotificationManager.notify(appName, notId, mBuilder.build());
+    }
+
+    private static int getIcon(Context context, String name){
+        int imageResource;
+        String uri = "drawable/" + name;
+        imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
+        return imageResource;
     }
 
     private static String getAppName(Context context)

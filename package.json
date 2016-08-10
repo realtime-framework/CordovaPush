@@ -1,6 +1,6 @@
 {
   "name": "cordovapush",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "This Cordova plugin should be used with the iOS/Android platforms together with the Realtime Messaging library (ORTC) for Push Notifications support.",
   "main": "index.js",
   "scripts": {
