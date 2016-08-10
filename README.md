@@ -110,9 +110,9 @@ Push Notifications only work in real devices for the iOS platform (not on simula
             
 ### Setting notification icons in Android platform
 
-*	For setting notification large icon you must have a image on resouces named "large_notification_icon" created following the android guide lines.
+*	To configure the notification large icon you must have an image on your app resouces named "large_notification_icon"
 
-*	For setting notification small icon you must have a image on resouces named "small_notification_icon" created following the android guide lines.
+*	To configure the notification small icon (for the notifications bar) you must have an image on your app resources named "small_notification_icon". It must be created following the [Android design guidelines](https://material.google.com/style/icons.html#icons-system-icons)
 
 
 ## Usage example
