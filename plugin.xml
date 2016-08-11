@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="co.realtime.plugins.CordovaPush"
-    version="0.1.17">
+    version="0.1.19">
 
   <name>cordovapush</name>
 	<author>Reatime</author>
@@ -84,6 +84,8 @@
 	<source-file src="src/android/OrtcPushHandlerActivity.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
 	<source-file src="src/android/GcmReceiver.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
     <source-file src="src/android/OrtcPushPlugin.java" target-dir="src/co/realtime/plugins/android/cordovapush" />
+
+    <hook type="before_build" src="scripts/realtime_cordovapush_icons.js" />
     </platform>
 
 </plugin>
