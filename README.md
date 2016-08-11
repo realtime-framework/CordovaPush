@@ -108,11 +108,13 @@ Push Notifications only work in real devices for the iOS platform (not on simula
         		window.plugins.OrtcPushPlugin.log("onException: " + exception.description);
             }, false);
             
-### Setting notification icons in Android platform
+### Setting notification icons for the Android platform
 
-*	To configure the notification large icon you must have an image on your app resouces named "large_notification_icon"
+*	To configure the notification large icon you must have an image on your app resources folder `resources/android/` named `large_notification_icon`
 
-*	To configure the notification small icon (for the notifications bar) you must have an image on your app resources named "small_notification_icon". It must be created following the [Android design guidelines](https://material.google.com/style/icons.html#icons-system-icons)
+*	To configure the notification small icon (for the notifications bar) you must have an image on your app resources folder `resources/android/` named `small_notification_icon`. 
+
+* IMPORANT: The small icon image must be created following the [Android design guidelines](https://material.google.com/style/icons.html#icons-system-icons), otherwise it will be rendered as a white square or won't be rendered at all in the notifications bar. 
 
 
 ## Usage example
