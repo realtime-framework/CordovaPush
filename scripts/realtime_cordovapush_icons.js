@@ -1,20 +1,22 @@
-#!/usr/bin/env node
+var filestocopy = [{ 
+	"resources/android/drawable/small_notification_icon.png": "platforms/android/res/drawable-ldpi/small_notification_icon.png", 
+	"resources/android/drawable/large_notification_icon.png": "platforms/android/res/drawable-ldpi/large_notification_icon.png",
+	"resources/android/values/colors.xml": "platforms/android/res/values/colors.xml" 
+}];
 
-// Copy native resources
-var rootdir = process.argv[2];
-var exec = require('child_process').exec;
+var fs = require('fs'); 
+var path = require('path');
 
-// Native resources to copy
-var androidNativePath = 'resources/android/';
-
-// Android platform resource path
-var androidResPath = 'platforms/android/res/';
-
-function copyAndroidResources() {
-  exec('cp -Rf ' + androidNativePath + '* ' + androidResPath);
-  process.stdout.write('Copied android native resources');
-}
-
-if (rootdir) {
-  copyAndroidResources();
-}
+filestocopy.forEach(function(obj) { 
+	Object.keys(obj).forEach(function(key) { 
+		var val = obj[key]; 
+		var srcfile = key; 
+		var destfile = val; 
+		console.log("copying "+srcfile+" to "+destfile); 
+		var destdir = path.dirname(destfile); 
+		if (fs.existsSync(srcfile) && fs.existsSync(destdir)) { 
+			fs.createReadStream(srcfile).pipe( 
+			fs.createWriteStream(destfile)); 
+		} 
+	}); 
+});
