@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.Random;
@@ -67,6 +68,8 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
 
         Bitmap appIcon = BitmapFactory.decodeResource(context.getResources(), largeIcon);
 
+        int color = getResource(context, "notification_color", "color");
+
         int smallIcon = getIcon(context, "small_notification_icon");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
@@ -78,6 +81,10 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
                         .setContentIntent(contentIntent)
                         .setAutoCancel(true);
 
+
+        if (color != 0){
+            mBuilder.setColor(ContextCompat.getColor(context, color));
+        }
 
         if (message != null) {
             mBuilder.setContentText(message);
@@ -105,6 +112,12 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         String uri = "drawable/" + name;
         imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
         return imageResource;
+    }
+
+    private static int getResource(Context context, String name, String type){
+        int resource;
+        resource = context.getResources().getIdentifier(name, type, context.getPackageName());
+        return resource;
     }
 
     private static String getAppName(Context context)
