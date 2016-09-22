@@ -1,69 +1,68 @@
-cordova.define("co.realtime.plugins.CordovaPush.OrtcPushPlugin", function(require, exports, module) {
 (function(cordova) {
  
  function OrtcPushPlugin() {}
  
  
  OrtcPushPlugin.prototype.checkForNotifications = function(success) {
- cordova.exec(success, success, "OrtcPushPlugin", "checkForNotifications", []);
+   cordova.exec(success, success, "OrtcPushPlugin", "checkForNotifications", []);
  };
  
  OrtcPushPlugin.prototype.removeNotifications = function(success) {
- cordova.exec(success, success, "OrtcPushPlugin", "removeNotifications", []);
+   cordova.exec(success, success, "OrtcPushPlugin", "removeNotifications", []);
  };
  
  OrtcPushPlugin.prototype.connect = function(config, success) {
- cordova.exec(success, success, "OrtcPushPlugin", "connect", config ? [config] : []);
+   cordova.exec(success, success, "OrtcPushPlugin", "connect", config ? [config] : []);
  };
  
  OrtcPushPlugin.prototype.disconnect = function(success) {
- cordova.exec(success, success, "OrtcPushPlugin", "disconnect", []);
+   cordova.exec(success, success, "OrtcPushPlugin", "disconnect", []);
  };
  
  OrtcPushPlugin.prototype.subscribe = function(config, success) {
- cordova.exec(success, success, "OrtcPushPlugin", "subscribe", config ? [config] : []);
+   cordova.exec(success, success, "OrtcPushPlugin", "subscribe", config ? [config] : []);
  };
  
  
  OrtcPushPlugin.prototype.unsubscribe = function(config, success) {
- cordova.exec(success, success, "OrtcPushPlugin", "unsubscribe", config ? [config] : []);
+   cordova.exec(success, success, "OrtcPushPlugin", "unsubscribe", config ? [config] : []);
  };
  
  OrtcPushPlugin.prototype.setApplicationIconBadgeNumber = function(badge, callback) {
- cordova.exec(callback, callback, "OrtcPushPlugin", "setApplicationIconBadgeNumber", [badge]);
+   cordova.exec(callback, callback, "OrtcPushPlugin", "setApplicationIconBadgeNumber", [badge]);
  };
  
  OrtcPushPlugin.prototype.send = function(config) {
- cordova.exec(null, null, "OrtcPushPlugin", "send", config ? [config] : []);
+   cordova.exec(null, null, "OrtcPushPlugin", "send", config ? [config] : []);
  };
  
  // Call this to clear all notifications from the notification center
  OrtcPushPlugin.prototype.cancelAllLocalNotifications = function(callback) {
- cordova.exec(callback, callback, "OrtcPushPlugin", "cancelAllLocalNotifications", []);
+   cordova.exec(callback, callback, "OrtcPushPlugin", "cancelAllLocalNotifications", []);
  };
  
  OrtcPushPlugin.prototype.log = function(log) {
- cordova.exec(null, null, "OrtcPushPlugin", "log", log ? [log] : []);
+   cordova.exec(null, null, "OrtcPushPlugin", "log", log ? [log] : []);
  };
  
  OrtcPushPlugin.prototype.receiveRemoteNotification = function(channel, payload) {
- var ev = document.createEvent('HTMLEvents');
- ev.channel = channel;
- ev.payload = payload;
- ev.initEvent('push-notification', true, true, arguments);
- document.dispatchEvent(ev);
+    var ev = document.createEvent('HTMLEvents');
+    ev.channel = channel;
+    ev.payload = payload;
+    ev.initEvent('push-notification', true, true, arguments);
+    document.dispatchEvent(ev);
  };
 
  OrtcPushPlugin.prototype.onException = function(error){
- var ev = document.createEvent('HTMLEvents');
- ev.description = error;
- ev.initEvent('onException', true, true, arguments);
- document.dispatchEvent(ev);
+    var ev = document.createEvent('HTMLEvents');
+    ev.description = error;
+    ev.initEvent('onException', true, true, arguments);
+    document.dispatchEvent(ev);
  };
  
  cordova.addConstructor(function() {
-                        if(!window.plugins) window.plugins = {};
-                        window.plugins.OrtcPushPlugin = new OrtcPushPlugin();
+                           if(!window.plugins) window.plugins = {};
+                           window.plugins.OrtcPushPlugin = new OrtcPushPlugin();
                         });
  
  })(window.cordova || window.Cordova || window.PhoneGap);
@@ -87,4 +86,7 @@ cordova.define("co.realtime.plugins.CordovaPush.OrtcPushPlugin", function(requir
                            }
                            });
 
-});
+
+
+
+
