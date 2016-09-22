@@ -129,14 +129,14 @@
 
 - (void)send:(CDVInvokedUrlCommand*)command
 {
- [self trowException:@"ORTC not connected" forCommand:command code:^(CDVInvokedUrlCommand *cmd) {
-    NSDictionary* args = [cmd.arguments objectAtIndex:0];
-    
-    NSString* channel = [args objectForKey:@"channel"];
-    NSString* channelMsg = [args objectForKey:@"message"];
-    
-     [_ortc send:channel message:channelMsg];
- }];
+    [self trowException:@"ORTC not connected" forCommand:command code:^(CDVInvokedUrlCommand *cmd) {
+        NSDictionary* args = [cmd.arguments objectAtIndex:0];
+        
+        NSString* channel = [args objectForKey:@"channel"];
+        NSString* channelMsg = [args objectForKey:@"message"];
+        
+        [_ortc send:channel message:channelMsg];
+    }];
 }
 
 - (void)cancelAllLocalNotifications:(CDVInvokedUrlCommand*)command{
@@ -151,6 +151,14 @@
 - (void)checkForNotifications:(CDVInvokedUrlCommand*)command
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"checkForNotifications" object:@"OrtcPushPlugin"];
+    CDVPluginResult* pluginResult = nil;
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:[command callbackId]];
+}
+
+- (void)removeNotifications:(CDVInvokedUrlCommand*)command
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeNotifications" object:@"OrtcPushPlugin"];
     CDVPluginResult* pluginResult = nil;
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:[command callbackId]];

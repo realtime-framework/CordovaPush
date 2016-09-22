@@ -30,6 +30,7 @@ public class OrtcPushPlugin extends CordovaPlugin {
 
     public static final String TAG = "ORTCPushPlugin";
     public static final String ACTION_CHECK_NOTIFICATIONS = "checkForNotifications";
+    public static final String ACTION_REMOVE_NOTIFICATIONS = "removeNotifications";
     public static final String ACTION_SET_ICON = "setApplicationIconBadgeNumber";
     public static final String ACTION_LOG = "log";
     public static final String ACTION_CONNECT = "connect";
@@ -206,6 +207,12 @@ public class OrtcPushPlugin extends CordovaPlugin {
                     sendExtras(gCachedExtras);
                     gCachedExtras = null;
                 }
+                callbackContext.success();
+                return true;
+            }
+            else if(ACTION_REMOVE_NOTIFICATIONS.equals(action)){
+                Log.v(TAG, "removing cached extras");
+                gCachedExtras = null;
                 callbackContext.success();
                 return true;
             }

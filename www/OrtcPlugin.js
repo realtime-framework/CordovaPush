@@ -1,3 +1,4 @@
+cordova.define("co.realtime.plugins.CordovaPush.OrtcPushPlugin", function(require, exports, module) {
 (function(cordova) {
  
  function OrtcPushPlugin() {}
@@ -7,6 +8,9 @@
  cordova.exec(success, success, "OrtcPushPlugin", "checkForNotifications", []);
  };
  
+ OrtcPushPlugin.prototype.removeNotifications = function(success) {
+ cordova.exec(success, success, "OrtcPushPlugin", "removeNotifications", []);
+ };
  
  OrtcPushPlugin.prototype.connect = function(config, success) {
  cordova.exec(success, success, "OrtcPushPlugin", "connect", config ? [config] : []);
@@ -82,3 +86,5 @@
                            OrtcPushPlugin.checkForNotifications();
                            }
                            });
+
+});

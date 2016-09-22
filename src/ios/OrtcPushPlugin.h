@@ -18,6 +18,7 @@
 @property(retain, nonatomic)NSMutableDictionary *connectCommand;
 
 - (void)checkForNotifications:(CDVInvokedUrlCommand*)command;
+- (void)removeNotifications:(CDVInvokedUrlCommand*)command;
 - (void)connect:(CDVInvokedUrlCommand*)command;
 - (void)disconnect:(CDVInvokedUrlCommand*)command;
 - (void)subscribe:(CDVInvokedUrlCommand*)command;
