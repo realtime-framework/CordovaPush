@@ -39,6 +39,10 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 *   **checkForNotifications(callback())**
 
     This method is used to verify push notifications on buffer on the native code from the javascript interface.
+    
+*   **removeNotifications(callback())**
+
+    This method is used clear the last push notifications on buffer on the native code from the javascript interface.
 
     *   callback() - is triggered after iOS/Android native finishes processing.
 *   **connect(config, successCallback())**

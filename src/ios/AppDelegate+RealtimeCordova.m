@@ -31,11 +31,11 @@ static char launchNotificationKey;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registForNotifications)
                                                  name:@"UIApplicationDidFinishLaunchingNotification" object:nil];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(processException:)
                                                  name:@"onException"
-                                               object:nil];    
+                                               object:nil];
     return [self change_init];
 }
 
@@ -60,6 +60,11 @@ static char launchNotificationKey;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handlePushNotifications)
                                                  name:@"checkForNotifications"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeStoredNotifications)
+                                                 name:@"removeNotifications"
                                                object:nil];
     
     return YES;
@@ -187,14 +192,16 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 }
 
 
-
-
-
 - (void)handlePushNotifications
 {
     if (self.pushInfo != nil) {
         [self processPush:self.pushInfo];
     }
+}
+
+- (void)removeStoredNotifications
+{
+    self.pushInfo = nil;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
