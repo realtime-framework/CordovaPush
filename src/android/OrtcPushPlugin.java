@@ -205,7 +205,6 @@ public class OrtcPushPlugin extends CordovaPlugin {
                 if ( gCachedExtras != null) {
                     Log.v(TAG, "sending cached extras");
                     sendExtras(gCachedExtras);
-                    gCachedExtras = null;
                 }
                 callbackContext.success();
                 return true;
