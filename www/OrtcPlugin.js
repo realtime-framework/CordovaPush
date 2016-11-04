@@ -1,92 +1,96 @@
 (function(cordova) {
  
- function OrtcPushPlugin() {}
+  function OrtcPushPlugin() {}
  
  
- OrtcPushPlugin.prototype.checkForNotifications = function(success) {
+  OrtcPushPlugin.prototype.checkForNotifications = function(success) {
    cordova.exec(success, success, "OrtcPushPlugin", "checkForNotifications", []);
- };
- 
- OrtcPushPlugin.prototype.removeNotifications = function(success) {
+  };
+
+  OrtcPushPlugin.prototype.removeNotifications = function(success) {
    cordova.exec(success, success, "OrtcPushPlugin", "removeNotifications", []);
- };
- 
- OrtcPushPlugin.prototype.connect = function(config, success) {
+  };
+
+  OrtcPushPlugin.prototype.connect = function(config, success) {
    cordova.exec(success, success, "OrtcPushPlugin", "connect", config ? [config] : []);
- };
- 
- OrtcPushPlugin.prototype.disconnect = function(success) {
+  };
+
+  OrtcPushPlugin.prototype.enableHeadsUpNotifications = function(config, success) {
+    cordova.exec(success, success, "OrtcPushPlugin", "enableHeadsUpNotifications", []);
+  };
+
+  OrtcPushPlugin.prototype.disableHeadsUpNotifications = function(config, success) {
+    cordova.exec(success, success, "OrtcPushPlugin", "disableHeadsUpNotifications", []);
+  };
+   
+  OrtcPushPlugin.prototype.disconnect = function(success) {
    cordova.exec(success, success, "OrtcPushPlugin", "disconnect", []);
- };
- 
- OrtcPushPlugin.prototype.subscribe = function(config, success) {
+  };
+
+  OrtcPushPlugin.prototype.subscribe = function(config, success) {
    cordova.exec(success, success, "OrtcPushPlugin", "subscribe", config ? [config] : []);
- };
- 
- 
- OrtcPushPlugin.prototype.unsubscribe = function(config, success) {
+  };
+
+
+  OrtcPushPlugin.prototype.unsubscribe = function(config, success) {
    cordova.exec(success, success, "OrtcPushPlugin", "unsubscribe", config ? [config] : []);
- };
- 
- OrtcPushPlugin.prototype.setApplicationIconBadgeNumber = function(badge, callback) {
+  };
+
+  OrtcPushPlugin.prototype.setApplicationIconBadgeNumber = function(badge, callback) {
    cordova.exec(callback, callback, "OrtcPushPlugin", "setApplicationIconBadgeNumber", [badge]);
- };
- 
- OrtcPushPlugin.prototype.send = function(config) {
+  };
+
+  OrtcPushPlugin.prototype.send = function(config) {
    cordova.exec(null, null, "OrtcPushPlugin", "send", config ? [config] : []);
- };
- 
- // Call this to clear all notifications from the notification center
- OrtcPushPlugin.prototype.cancelAllLocalNotifications = function(callback) {
+  };
+
+  // Call this to clear all notifications from the notification center
+  OrtcPushPlugin.prototype.cancelAllLocalNotifications = function(callback) {
    cordova.exec(callback, callback, "OrtcPushPlugin", "cancelAllLocalNotifications", []);
- };
- 
- OrtcPushPlugin.prototype.log = function(log) {
+  };
+
+  OrtcPushPlugin.prototype.log = function(log) {
    cordova.exec(null, null, "OrtcPushPlugin", "log", log ? [log] : []);
- };
- 
- OrtcPushPlugin.prototype.receiveRemoteNotification = function(channel, payload) {
+  };
+
+  OrtcPushPlugin.prototype.receiveRemoteNotification = function(channel, payload) {
     var ev = document.createEvent('HTMLEvents');
     ev.channel = channel;
     ev.payload = payload;
     ev.initEvent('push-notification', true, true, arguments);
     document.dispatchEvent(ev);
- };
+  };
 
- OrtcPushPlugin.prototype.onException = function(error){
+  OrtcPushPlugin.prototype.onException = function(error){
     var ev = document.createEvent('HTMLEvents');
     ev.description = error;
     ev.initEvent('onException', true, true, arguments);
     document.dispatchEvent(ev);
- };
- 
- cordova.addConstructor(function() {
+  };
+
+  cordova.addConstructor(function() {
                            if(!window.plugins) window.plugins = {};
                            window.plugins.OrtcPushPlugin = new OrtcPushPlugin();
                         });
- 
- })(window.cordova || window.Cordova || window.PhoneGap);
- 
- 
- // call when device is ready
- document.addEventListener("deviceready", function () {
-                           if(window.plugins && window.plugins.OrtcPushPlugin){
-                           var OrtcPushPlugin = window.plugins.OrtcPushPlugin;
-                           OrtcPushPlugin.checkForNotifications();
 
-                           }
-                           });
- 
- 
- // call when app resumes
- document.addEventListener("resume", function () {
-                           if(window.plugins && window.plugins.OrtcPushPlugin){
-                           var OrtcPushPlugin = window.plugins.OrtcPushPlugin;
-                           OrtcPushPlugin.checkForNotifications();
-                           }
-                           });
+})(window.cordova || window.Cordova || window.PhoneGap);
 
 
+// call when device is ready
+document.addEventListener("deviceready", function () {
+                         if(window.plugins && window.plugins.OrtcPushPlugin){
+                         var OrtcPushPlugin = window.plugins.OrtcPushPlugin;
+                         OrtcPushPlugin.checkForNotifications();
+
+                         }
+                         });
 
 
+// call when app resumes
+document.addEventListener("resume", function () {
+                         if(window.plugins && window.plugins.OrtcPushPlugin){
+                         var OrtcPushPlugin = window.plugins.OrtcPushPlugin;
+                         OrtcPushPlugin.checkForNotifications();
+                         }
+                         });
 
