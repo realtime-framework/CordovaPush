@@ -169,6 +169,14 @@
     NSLog(@"OrtcPushPlugin: %@",[command.arguments objectAtIndex:0]);
 }
 
+- (void)enableHeadsUpNotifications:(CDVInvokedUrlCommand*)command{
+
+}
+
+- (void)disableHeadsUpNotifications:(CDVInvokedUrlCommand*)command{
+    
+}
+
 @end
 
 

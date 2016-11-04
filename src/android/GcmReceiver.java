@@ -5,9 +5,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -74,6 +76,7 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setDefaults(defaults)
+                        .setPriority(getAppPriority(context))
                         .setLargeIcon(appIcon)
                         .setSmallIcon(smallIcon)
                         .setWhen(System.currentTimeMillis())
@@ -129,4 +132,18 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
 
         return (String)appName;
     }
+
+    public static int getAppPriority(Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int val = preferences.getInt("APP_PRIORITY", 0);
+        return val;
+    }
+
+    public static void setAppPriority(Context context, int priority){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("APP_PRIORITY", priority);
+        editor.apply();
+    }
+
 }

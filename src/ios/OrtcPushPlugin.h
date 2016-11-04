@@ -26,5 +26,7 @@
 - (void)setApplicationIconBadgeNumber:(CDVInvokedUrlCommand*)command;
 - (void)cancelAllLocalNotifications:(CDVInvokedUrlCommand*)command;
 - (void)log:(CDVInvokedUrlCommand*)command;
+- (void)enableHeadsUpNotifications:(CDVInvokedUrlCommand*)command;
+- (void)disableHeadsUpNotifications:(CDVInvokedUrlCommand*)command;
 
 @end

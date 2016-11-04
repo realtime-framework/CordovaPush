@@ -1,6 +1,7 @@
 package co.realtime.plugins.android.cordovapush;
 
 import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -39,6 +40,8 @@ public class OrtcPushPlugin extends CordovaPlugin {
     public static final String ACTION_UNSUBSCRIBE = "unsubscribe";
     public static final String ACTION_CANCEL_NOTIFICATIONS = "cancelAllLocalNotifications";
     public static final String ACTION_SEND_MESSAGE = "send";
+    private static final String ACTION_ENABLE_HEADS_UP_NOTIFICATIONS = "enableHeadsUpNotifications";
+    private static final String ACTION_DISABLE_HEADS_UP_NOTIFICATIONS = "disableHeadsUpNotifications";
     private OrtcClient client;
     private static CordovaWebView gWebView;
     private static Bundle gCachedExtras = null;
@@ -254,6 +257,16 @@ public class OrtcPushPlugin extends CordovaPlugin {
             else if(ACTION_SET_ICON.equals(action)){
                 Log.i(TAG,"Set icon badge number not implemented in Android");
                 callbackContext.success();
+                return true;
+            }
+            else if(ACTION_ENABLE_HEADS_UP_NOTIFICATIONS.equals(action)){
+                Context context = cordova.getActivity().getApplicationContext();
+                GcmReceiver.setAppPriority(context, 1);
+                return true;
+            }
+            else if(ACTION_DISABLE_HEADS_UP_NOTIFICATIONS.equals(action)){
+                Context context = cordova.getActivity().getApplicationContext();
+                GcmReceiver.setAppPriority(context, 0);
                 return true;
             }
             callbackContext.error("Invalid action");

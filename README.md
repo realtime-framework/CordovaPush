@@ -128,7 +128,13 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 	    <color name="notification_color">#ff0000</color>
 	</resources> 	 
 
+### Set notifications display mode
 
+Only available for android. [Check android documentation](https://developer.android.com/guide/topics/ui/notifiers/notifications.html#Heads-up)
+
+**enableHeadsUpNotifications** Use this method to set the notification display type to Heads-up. This method persists the set value, to disable the heads-up notifications you must call `disableHeadsUpNotifications`.
+
+**disableHeadsUpNotifications** Use this method to set the default notifications display (only the small icon is shown in the notification bar) and disable Heads-up.
 
 ## Usage example
 
