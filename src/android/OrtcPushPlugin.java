@@ -210,7 +210,7 @@ public class OrtcPushPlugin extends CordovaPlugin {
                 return true;
             }
             else if(ACTION_UNSUBSCRIBE.equals(action)){
-                commands.put(ACTION_SUBSCRIBE, callbackContext);
+                commands.put(ACTION_UNSUBSCRIBE, callbackContext);
                 cordova.getThreadPool().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -227,7 +227,7 @@ public class OrtcPushPlugin extends CordovaPlugin {
                 return true;
             }
             else if(ACTION_CANCEL_NOTIFICATIONS.equals(action)){
-                commands.put(ACTION_SUBSCRIBE, callbackContext);
+                commands.put(ACTION_CANCEL_NOTIFICATIONS, callbackContext);
                 final NotificationManager notificationManager = (NotificationManager) this.cordova.getActivity().getSystemService(this.cordova.getActivity().NOTIFICATION_SERVICE);
                 notificationManager.cancelAll();
                 callbackContext.success();
