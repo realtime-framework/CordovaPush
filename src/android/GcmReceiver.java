@@ -114,6 +114,10 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         int imageResource;
         String uri = "drawable/" + name;
         imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
+
+        if (imageResource == 0){
+            imageResource = context.getApplicationInfo().icon;
+        }
         return imageResource;
     }
 
