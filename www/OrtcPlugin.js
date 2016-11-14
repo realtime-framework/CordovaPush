@@ -15,6 +15,10 @@
    cordova.exec(success, success, "OrtcPushPlugin", "connect", config ? [config] : []);
   };
 
+  OrtcPushPlugin.prototype.getIsConnected = function(success) {
+    cordova.exec(success, success, "OrtcPushPlugin", "getIsConnected", []);
+  };
+
   OrtcPushPlugin.prototype.enableHeadsUpNotifications = function(config, success) {
     cordova.exec(success, success, "OrtcPushPlugin", "enableHeadsUpNotifications", []);
   };

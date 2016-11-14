@@ -21,6 +21,7 @@
 - (void)removeNotifications:(CDVInvokedUrlCommand*)command;
 - (void)connect:(CDVInvokedUrlCommand*)command;
 - (void)disconnect:(CDVInvokedUrlCommand*)command;
+- (void)getIsConnected:(CDVInvokedUrlCommand*)command;
 - (void)subscribe:(CDVInvokedUrlCommand*)command;
 - (void)unsubscribe:(CDVInvokedUrlCommand*)command;
 - (void)setApplicationIconBadgeNumber:(CDVInvokedUrlCommand*)command;

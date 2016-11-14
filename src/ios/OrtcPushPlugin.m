@@ -44,6 +44,15 @@
     
 }
 
+- (void)getIsConnected:(CDVInvokedUrlCommand*)command
+{
+    [_connectCommand setObject:command forKey:@"getIsConnected"];
+    CDVPluginResult* pluginResult = nil;
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:[_ortc isConnected]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:[[_connectCommand objectForKey:@"getIsConnected"] callbackId]];
+}
+
+
 - (void)trowException:(NSString*)exception forCommand:(CDVInvokedUrlCommand*)command code:(void (^)(CDVInvokedUrlCommand*))code{
     if (!_ortc) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"onException" object:nil userInfo:@{@"exception":exception}];
