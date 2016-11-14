@@ -42,6 +42,7 @@ public class OrtcPushPlugin extends CordovaPlugin {
     public static final String ACTION_SEND_MESSAGE = "send";
     private static final String ACTION_ENABLE_HEADS_UP_NOTIFICATIONS = "enableHeadsUpNotifications";
     private static final String ACTION_DISABLE_HEADS_UP_NOTIFICATIONS = "disableHeadsUpNotifications";
+    private static final String ACTION_GET_CONNECTION_STATE = "getIsConnected";
     private OrtcClient client;
     private static CordovaWebView gWebView;
     private static Bundle gCachedExtras = null;
@@ -78,7 +79,9 @@ public class OrtcPushPlugin extends CordovaPlugin {
             client.onDisconnected = new OnDisconnected() {
                 @Override
                 public void run(OrtcClient ortcClient) {
-                    Log.i(TAG,"Disconnected" );
+                    CallbackContext call = (CallbackContext)commands.get(ACTION_DISCONNECT);
+                    if (call != null)
+                        call.success();
                 }
             };
 
@@ -100,7 +103,6 @@ public class OrtcPushPlugin extends CordovaPlugin {
                         call.success();
                 }
             };
-
 
             client.onReconnected = new OnReconnected(){
                 @Override
@@ -156,6 +158,11 @@ public class OrtcPushPlugin extends CordovaPlugin {
             if (ACTION_LOG.equals(action)) {
                 Log.i(TAG,args.get(0).toString());
                 callbackContext.success();
+                return true;
+            }
+            else if(ACTION_GET_CONNECTION_STATE.equals(action)){
+                int isConnected = client.getIsConnected()? 1: 0;
+                callbackContext.success(isConnected);
                 return true;
             }
             else if(ACTION_CONNECT.equals(action)){

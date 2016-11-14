@@ -54,6 +54,11 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 *  **disconnect(callback())**
 
     This method is used to disconnect the ORTC connection.
+    
+*	**getIsConnected(callback(state))**
+	
+	Gets ortc client connection state.
+	Returns callback state 0 if not connected and 1 connected.	
 
     *   callback() - is triggered after connection is disconnected.
 *  **subscribe(channel, callback())**
