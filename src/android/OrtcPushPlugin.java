@@ -88,7 +88,6 @@ public class OrtcPushPlugin extends CordovaPlugin {
             client.onUnsubscribed = new OnUnsubscribed() {
                 @Override
                 public void run(OrtcClient ortcClient, String channel) {
-                    Log.i(TAG,"Unsubscribed from:" + channel);
                     CallbackContext call = (CallbackContext)commands.get(ACTION_UNSUBSCRIBE);
                     if (call != null)
                         call.success();
@@ -186,6 +185,7 @@ public class OrtcPushPlugin extends CordovaPlugin {
                 return true;
             }
             else if(ACTION_DISCONNECT.equals(action)){
+                commands.put(ACTION_DISCONNECT, callbackContext);
                 client.disconnect();
                 return true;
             }
@@ -267,13 +267,23 @@ public class OrtcPushPlugin extends CordovaPlugin {
                 return true;
             }
             else if(ACTION_ENABLE_HEADS_UP_NOTIFICATIONS.equals(action)){
-                Context context = cordova.getActivity().getApplicationContext();
-                GcmReceiver.setAppPriority(context, 1);
+                cordova.getThreadPool().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Context context = cordova.getActivity().getApplicationContext();
+                        GcmReceiver.setAppPriority(context, 1);
+                    }
+                });
                 return true;
             }
             else if(ACTION_DISABLE_HEADS_UP_NOTIFICATIONS.equals(action)){
-                Context context = cordova.getActivity().getApplicationContext();
-                GcmReceiver.setAppPriority(context, 0);
+                cordova.getThreadPool().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Context context = cordova.getActivity().getApplicationContext();
+                        GcmReceiver.setAppPriority(context, 0);
+                    }
+                });
                 return true;
             }
             callbackContext.error("Invalid action");
