@@ -26,7 +26,7 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 4.   **Build and run the app in an iOS/Android device**
 
     NOTE: iOS - The Push Notifications won't work on the simulators, only on actual devices.  
-     NOTE: Android - The Push Notifications will work on the emulators only if is a Google APIs emulator.
+    NOTE: Android - The Push Notifications will work on the emulators only if is a Google APIs emulator.
 
 * * *
 
@@ -36,32 +36,32 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 
 * * *
 
-*   **checkForNotifications(callback())**
+*   **var promise = checkForNotifications()**
 
     This method is used to verify push notifications on buffer on the native code from the javascript interface.
     
-*   **removeNotifications(callback())**
+*   **var promise = removeNotifications()**
 
     This method is used clear the last push notifications on buffer on the native code from the javascript interface.
 
-    *   callback() - is triggered after iOS/Android native finishes processing.
-*   **connect(config, successCallback())**
+    *   promise - resolved after iOS/Android native finishes processing.
+*   **var promise = connect(config)**
 
     This method is used to establish the ORTC connection.
 
     *   config - is a JSONObject with the config to connect. Ex: {'appkey':'YOUR_APPLICATION_KEY', 'token':'myToken', 'metadata':'myMetadata', 'url':'https://ortc-developers.realtime.co/server/ssl/2.1/','projectId':'YOUR_GOOGLE_PROJECT_NUMBER'}. ProjectId only necessary on Android Push Notifications.
-    *   successCallback() - this function is call when connection is established.
-*  **disconnect(callback())**
+    *   promise - resolve is call when connection is established.
+*  **var promise = disconnect()**
 
     This method is used to disconnect the ORTC connection.
-    
-*	**getIsConnected(callback(state))**
+     *   promise - resolved after connection is disconnected.
+     
+*	**var promise = getIsConnected()**
 	
 	Gets ortc client connection state.
-	Returns callback state 0 if not connected and 1 connected.	
-
-    *   callback() - is triggered after connection is disconnected.
-*  **subscribe(channel, callback())**
+	
+	Resolves promise with parameter state 0 if not connected and 1 connected.	
+*  **var promise = subscribe(channel)**
 
     Subscribe a channel. Note: In order to receive the push notifications on the channel you just subscribed you have to add an event listener with the name "push-notification" to your html like:
 
@@ -74,36 +74,36 @@ Push Notifications only work in real devices for the iOS platform (not on simula
         		payload.value = JSON.stringify( notification.payload );
         	}, false);
 
-    **The object notification passed as argument** on the callback function is an JSONObject with the fields **channel** and **payload**, where channel is the name of the channel and payload is the content you sent. (like a JSONObject or a String).
+    **The object notification passed as argument** on the listener function is an JSONObject with the fields **channel** and **payload**, where channel is the name of the channel and payload is the content you sent. (like a JSONObject or a String).
 
         Ex: {"channel":"mychannel","payload":"{"sound":"default","badge":"1","name":"Joe","age" :"48}"}
 
     **NOTE: Please in your payload try to avoid '\n' since you can have some issues.**
 
     *   is a JSONObject with the channel to subscribe. Ex: {'channel':'mychannel'}
-    *   callback() - is triggered after channel is subscribed.
-*  **unsubscribe(channel,callback())**
+    *  promise - resolved when channel is subscribed.
+*  **var promise = unsubscribe(channel)**
 
     This method is used to unsubscribe a channel previously subscribed.
 
     *   channel - is a JSONObject with the channel name to unsubscribe. Ex: {'channel':'mychannel'}
-    *   callback() - is triggered after channel is unsubscribed.
-*  **setApplicationIconBadgeNumber(badge,callback())**
+    *   promise - resolved when channel is unsubscribed.
+*  **var promise = setApplicationIconBadgeNumber(badge)**
 
     This method is used to set the application badge number on iOS. Not implemented on Android.
 
     *   badge - the number to appear on the bage.
-    *   callback() - is triggered after iOS/Android native code finishes.
+    *   promise - resolved after iOS/Android native code finishes.
 *  **send(config)**
 
     This method is used to send a message to a channel.
 
     *   config - is a JSONObject with the channel to send the message. Ex: {'channel':'mychannel','message':'mymessage'}.
-*  **cancelAllLocalNotifications(callback())**
+*  **var promise = cancelAllLocalNotifications()**
 
     This method is used to clear notifications from notification center.
 
-    *   callback() - is triggered after iOS/Android native code finishes.
+    *  promise - resolved after iOS/Android native code finishes.
 *  **log(logString)**
 
     This is a handy method to log data into XCODE/AndroidStudio console from the javascript code.
@@ -137,9 +137,9 @@ Push Notifications only work in real devices for the iOS platform (not on simula
 
 Only available for android. [Check android documentation](https://developer.android.com/guide/topics/ui/notifiers/notifications.html#Heads-up)
 
-**enableHeadsUpNotifications** Use this method to set the notification display type to Heads-up. This method persists the set value, to disable the heads-up notifications you must call `disableHeadsUpNotifications`.
+**var promise = enableHeadsUpNotifications()** Use this method to set the notification display type to Heads-up. This method persists the set value, to disable the heads-up notifications you must call `disableHeadsUpNotifications`.
 
-**disableHeadsUpNotifications** Use this method to set the default notifications display (only the small icon is shown in the notification bar) and disable Heads-up.
+**var promise = disableHeadsUpNotifications()** Use this method to set the default notifications display (only the small icon is shown in the notification bar) and disable Heads-up.
 
 ## Usage example
 
@@ -167,11 +167,13 @@ Add to your app:
                        var OrtcPushPlugin = window.plugins.OrtcPushPlugin;
                        OrtcPushPlugin.log("Connecting");
 
-                       OrtcPushPlugin.connect({'appkey':'YOUR_APPLICATION_KEY', 'token':'myToken', 'metadata':'myMetadata', 'url':'https://ortc-developers.realtime.co/server/ssl/2.1/','projectId':'YOUR_GOOGLE_PROJECT_NUMBER'}, function (){
+                       OrtcPushPlugin.connect({'appkey':'YOUR_APPLICATION_KEY', 'token':'myToken', 'metadata':'myMetadata', 'url':'https://ortc-developers.realtime.co/server/ssl/2.1/','projectId':'YOUR_GOOGLE_PROJECT_NUMBER'})
+                       .then(function (){
                                         OrtcPushPlugin.log("Connected: ");
                                         var channel = document.getElementById('channel');
                                         OrtcPushPlugin.log("Trying to subscribe: " + channel.value);
-                                        OrtcPushPlugin.subscribe({'channel':channel.value}, function (){
+                                        OrtcPushPlugin.subscribe({'channel':channel.value})
+                                        .then(function (){
                                                                    var subcribed = document.getElementById('subscribed');
                                                                    subcribed.innerHTML = "subscribed: " + channel.value;
                                                                    OrtcPushPlugin.log("subscribed: " + channel.value);

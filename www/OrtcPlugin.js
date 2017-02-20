@@ -1,60 +1,92 @@
 (function(cordova) {
  
   function OrtcPushPlugin() {}
- 
- 
-  OrtcPushPlugin.prototype.checkForNotifications = function(success) {
-   cordova.exec(success, success, "OrtcPushPlugin", "checkForNotifications", []);
+
+  OrtcPushPlugin.prototype.checkForNotifications = function() {
+    var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "checkForNotifications", []);
+    });
+    return promise;
   };
 
-  OrtcPushPlugin.prototype.removeNotifications = function(success) {
-   cordova.exec(success, success, "OrtcPushPlugin", "removeNotifications", []);
+  OrtcPushPlugin.prototype.removeNotifications = function() {
+    var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "removeNotifications", []);
+    });
+    return promise;
   };
 
-  OrtcPushPlugin.prototype.connect = function(config, success) {
-   cordova.exec(success, success, "OrtcPushPlugin", "connect", config ? [config] : []);
+  OrtcPushPlugin.prototype.connect = function(config) {
+    var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "connect", config ? [config] : []);
+    });
+    return promise;
   };
 
-  OrtcPushPlugin.prototype.getIsConnected = function(success) {
-    cordova.exec(success, success, "OrtcPushPlugin", "getIsConnected", []);
+  OrtcPushPlugin.prototype.getIsConnected = function() {
+    var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "getIsConnected", []);
+    });
+    return promise;
   };
 
-  OrtcPushPlugin.prototype.enableHeadsUpNotifications = function(config, success) {
-    cordova.exec(success, success, "OrtcPushPlugin", "enableHeadsUpNotifications", []);
+  OrtcPushPlugin.prototype.enableHeadsUpNotifications = function() {
+    var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "enableHeadsUpNotifications", []);
+    });
+    return promise;
   };
 
-  OrtcPushPlugin.prototype.disableHeadsUpNotifications = function(config, success) {
-    cordova.exec(success, success, "OrtcPushPlugin", "disableHeadsUpNotifications", []);
+  OrtcPushPlugin.prototype.disableHeadsUpNotifications = function() {
+    var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "disableHeadsUpNotifications", []);
+    });
+    return promise;
   };
    
-  OrtcPushPlugin.prototype.disconnect = function(success) {
-   cordova.exec(success, success, "OrtcPushPlugin", "disconnect", []);
+  OrtcPushPlugin.prototype.disconnect = function() {
+    var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "disconnect", []);
+    });
+    return promise;
   };
 
-  OrtcPushPlugin.prototype.subscribe = function(config, success) {
-   cordova.exec(success, success, "OrtcPushPlugin", "subscribe", config ? [config] : []);
+  OrtcPushPlugin.prototype.subscribe = function(config) {
+   var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "subscribe", config ? [config] : []);
+   });
+   return promise;
   };
 
 
-  OrtcPushPlugin.prototype.unsubscribe = function(config, success) {
-   cordova.exec(success, success, "OrtcPushPlugin", "unsubscribe", config ? [config] : []);
+  OrtcPushPlugin.prototype.unsubscribe = function(config) {
+    var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "unsubscribe", config ? [config] : []);
+    });
+    return promise;
   };
 
-  OrtcPushPlugin.prototype.setApplicationIconBadgeNumber = function(badge, callback) {
-   cordova.exec(callback, callback, "OrtcPushPlugin", "setApplicationIconBadgeNumber", [badge]);
+  OrtcPushPlugin.prototype.setApplicationIconBadgeNumber = function(badge) {
+   var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "setApplicationIconBadgeNumber", [badge]);
+   });
+   return promise;
   };
 
   OrtcPushPlugin.prototype.send = function(config) {
-   cordova.exec(null, null, "OrtcPushPlugin", "send", config ? [config] : []);
+    cordova.exec(null, null, "OrtcPushPlugin", "send", config ? [config] : []);
   };
 
   // Call this to clear all notifications from the notification center
-  OrtcPushPlugin.prototype.cancelAllLocalNotifications = function(callback) {
-   cordova.exec(callback, callback, "OrtcPushPlugin", "cancelAllLocalNotifications", []);
+  OrtcPushPlugin.prototype.cancelAllLocalNotifications = function() {
+   var promise = new Promise(function(resolve, reject) {
+        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "cancelAllLocalNotifications", []);
+   });
+   return promise;
   };
 
   OrtcPushPlugin.prototype.log = function(log) {
-   cordova.exec(null, null, "OrtcPushPlugin", "log", log ? [log] : []);
+    cordova.exec(null, null, "OrtcPushPlugin", "log", log ? [log] : []);
   };
 
   OrtcPushPlugin.prototype.receiveRemoteNotification = function(channel, payload) {
@@ -97,4 +129,5 @@ document.addEventListener("resume", function () {
                          OrtcPushPlugin.checkForNotifications();
                          }
                          });
+
 
