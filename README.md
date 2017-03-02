@@ -74,9 +74,13 @@ Push Notifications only work in real devices for the iOS platform (not on simula
         		payload.value = JSON.stringify( notification.payload );
         	}, false);
 
-    **The object notification passed as argument** on the listener function is an JSONObject with the fields **channel** and **payload**, where channel is the name of the channel and payload is the content you sent. (like a JSONObject or a String).
+    **The object notification passed as argument** on the listener function is an JSONObject with the fields **channel**, **payload** and **tapped**, where channel is the name of the channel, payload is the content you sent (like a JSONObject or a String) and tapped is 0 or 1 indicating if the user tapped the notification.
 
-        Ex: {"channel":"mychannel","payload":"{"sound":"default","badge":"1","name":"Joe","age" :"48}"}
+        	{
+        		channel: "mychannel",
+        		payload: {"sound":"default","badge":"1","name":"Joe","age" :"48"},
+        		tapped: 1
+        	}
 
     **NOTE: Please in your payload try to avoid '\n' since you can have some issues.**
 

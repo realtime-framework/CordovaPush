@@ -97,8 +97,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
         appState = application.applicationState;
     }
     
+    int state;
+    if(application.applicationState == UIApplicationStateActive) {
+        state = 0;
+    }else if(application.applicationState == UIApplicationStateBackground){
+        state = 0;
+    }else if(application.applicationState == UIApplicationStateInactive){
+        state = 1;
+    }
+
+    
     if (appState == UIApplicationStateActive) {
-        [self processPush:userInfo];
+        [self processPush:userInfo tapped:state];
     } else {
         //save it for later
         self.pushInfo = userInfo;
@@ -112,7 +122,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
     [((UIWebView*)self.viewController.webView)  stringByEvaluatingJavaScriptFromString:error];
 }
 
-- (void)processPush:(NSDictionary *)userInfo
+- (void)processPush:(NSDictionary *)userInfo tapped:(int)tapped
 {
     NSMutableDictionary *pushInfo = [[NSMutableDictionary alloc] init];
     
@@ -129,7 +139,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
     
     if ([[pushInfo objectForKey:@"payload"] isKindOfClass:[NSString class]]) {
         
-        jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@','%@');",channel, [pushInfo objectForKey:@"payload"]];
+        jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@','%@',%d);",channel, [pushInfo objectForKey:@"payload"], tapped];
         [((UIWebView*)self.viewController.webView)  stringByEvaluatingJavaScriptFromString:jsCallBack];
         
     }else{
@@ -141,7 +151,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
         
         NSString *jsonstring = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         
-        jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@',%@);",channel, jsonstring];
+        jsCallBack = [NSString stringWithFormat:@"window.plugins.OrtcPushPlugin.receiveRemoteNotification('%@',%@ ,%d);",channel, jsonstring, tapped];
         
         [((UIWebView*)self.viewController.webView)  stringByEvaluatingJavaScriptFromString:jsCallBack];
     }
@@ -195,18 +205,14 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 - (void)handlePushNotifications
 {
     if (self.pushInfo != nil) {
-        [self processPush:self.pushInfo];
+        [self processPush:self.pushInfo tapped:1];
+        [self removeStoredNotifications];
     }
 }
 
 - (void)removeStoredNotifications
 {
     self.pushInfo = nil;
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    [self handlePushNotifications];
-    
 }
 
 

@@ -1,8 +1,6 @@
 package co.realtime.plugins.android.cordovapush;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -35,7 +33,7 @@ public class OrtcPushHandlerActivity extends Activity{
             Bundle originalExtras = extras.getBundle("pushBundle");
 
             originalExtras.putBoolean("foreground", false);
-            OrtcPushPlugin.sendExtras(originalExtras);
+            OrtcPushPlugin.sendExtras(originalExtras, 1);
         }
     }
 

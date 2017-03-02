@@ -33,7 +33,7 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
             // if we are in the foreground, just surface the payload, else post it to the statusbar
             if (OrtcPushPlugin.isInForeground()) {
                 extras.putBoolean("foreground", true);
-                OrtcPushPlugin.sendExtras(extras);
+                OrtcPushPlugin.sendExtras(extras, 0);
             } else {
                 extras.putBoolean("foreground", false);
                 // Send a notification if there is a message
