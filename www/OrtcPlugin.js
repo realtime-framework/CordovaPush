@@ -89,10 +89,11 @@
     cordova.exec(null, null, "OrtcPushPlugin", "log", log ? [log] : []);
   };
 
-  OrtcPushPlugin.prototype.receiveRemoteNotification = function(channel, payload) {
+  OrtcPushPlugin.prototype.receiveRemoteNotification = function(channel, payload, tapped) {
     var ev = document.createEvent('HTMLEvents');
     ev.channel = channel;
     ev.payload = payload;
+    ev.tapped = tapped;
     ev.initEvent('push-notification', true, true, arguments);
     document.dispatchEvent(ev);
   };

@@ -250,7 +250,7 @@ public class OrtcPushPlugin extends CordovaPlugin {
             else if(ACTION_CHECK_NOTIFICATIONS.equals(action)){
                 if ( gCachedExtras != null) {
                     Log.v(TAG, "sending cached extras");
-                    sendExtras(gCachedExtras);
+                    sendExtras(gCachedExtras, 1);
                 }
                 callbackContext.success();
                 return true;
@@ -317,16 +317,16 @@ public class OrtcPushPlugin extends CordovaPlugin {
     }
 
 
-    public static void sendJavascript(JSONObject json) {
+    public static void sendJavascript(JSONObject json, int tapped) {
         try {
             String send = "";
             String channel = json.getString("channel");
             json.remove("channel");
             try {
                 new JSONObject(json.getString("payload"));
-                send = String.format("window.plugins.OrtcPushPlugin.receiveRemoteNotification('%s',%s);",channel,json.getString("payload"));
+                send = String.format("window.plugins.OrtcPushPlugin.receiveRemoteNotification('%s',%s, %d);",channel,json.getString("payload"), tapped);
             } catch (JSONException ex) {
-                send = String.format("window.plugins.OrtcPushPlugin.receiveRemoteNotification('%s','%s');",channel,json.getString("payload"));
+                send = String.format("window.plugins.OrtcPushPlugin.receiveRemoteNotification('%s','%s', %d);",channel,json.getString("payload"), tapped);
             }
 
 
@@ -348,11 +348,11 @@ public class OrtcPushPlugin extends CordovaPlugin {
 
     }
 
-    public static void sendExtras(Bundle extras)
+    public static void sendExtras(Bundle extras, int tapped)
     {
         if (extras != null) {
             if (gWebView != null) {
-                sendJavascript(convertBundleToJson(extras));
+                sendJavascript(convertBundleToJson(extras), tapped);
             } else {
                 Log.v(TAG, "sendExtras: caching extras to send at a later time.");
                 gCachedExtras = extras;
