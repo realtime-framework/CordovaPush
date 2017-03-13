@@ -25,7 +25,7 @@
 
   OrtcPushPlugin.prototype.getIsConnected = function() {
     var promise = new Promise(function(resolve, reject) {
-        cordova.exec(function(){resolve();}, function(){reject();}, "OrtcPushPlugin", "getIsConnected", []);
+        cordova.exec(function(res){resolve(res);}, function(){reject();}, "OrtcPushPlugin", "getIsConnected", []);
     });
     return promise;
   };
