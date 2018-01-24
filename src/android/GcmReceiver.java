@@ -71,7 +71,6 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         String CHANNEL_ID = "cp_channel_01"; //The id of the channel.
         CharSequence name = "Notifications"; // The user-visible name of the channel.
         int importance = NotificationManager.IMPORTANCE_HIGH;
-        NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
 
         int largeIcon = getIcon(context, "large_notification_icon");
 
@@ -115,6 +114,7 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
             mNotificationManager.createNotificationChannel(mChannel);
         }
 
