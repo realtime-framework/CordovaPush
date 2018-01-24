@@ -2,6 +2,7 @@ package co.realtime.plugins.android.cordovapush;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
@@ -66,6 +68,10 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         String channel = extras.getString("C");
         String message = extras.getString("message");
 
+        String CHANNEL_ID = "cp_channel_01"; //The id of the channel.
+        CharSequence name = "Notifications"; // The user-visible name of the channel.
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
         int largeIcon = getIcon(context, "large_notification_icon");
 
         Bitmap appIcon = BitmapFactory.decodeResource(context.getResources(), largeIcon);
@@ -74,7 +80,7 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
 
         int smallIcon = getIcon(context, "small_notification_icon");
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
+                new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setDefaults(defaults)
                         .setPriority(getAppPriority(context))
                         .setLargeIcon(appIcon)
@@ -105,6 +111,11 @@ public class GcmReceiver extends GcmOrtcBroadcastReceiver {
         }
         catch(Exception e) {
             Log.e(TAG, "Number format exception - Error parsing Notification ID" + e.getMessage());
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            mNotificationManager.createNotificationChannel(mChannel);
         }
 
         mNotificationManager.notify(appName, notId, mBuilder.build());
